@@ -1,0 +1,71 @@
+<!-- # PBL W7
+# zepół 5
+
+# wariant pełen ("jedna lub wiele lampek-klientów z jednym lub wieloma sterownikami-klientami"):
+#   - jeden serwer, który nie ma dopiętej diody LED,
+#   - jedno lub wiele urządzeń klienckich, które pełnią rolę lampy z diodą LED RGB; dioda powinna świecić zgodnie z nastawami, które dyktuje serwer,
+#   - jedno lub wiele urządzeń klienckich, które mogą sterować parametrami dowolnej lampy na podstawie dialogu z użytkownikiem. -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PBL3 W7 z5 Dashboard</title>
+    <script src="/static/jquery.min.js"></script>                             <!--(1)-->
+    <script type="text/javascript">
+
+    function updateControls(data, id, color) {
+        var sliderid = "slider" + id + color;
+        var levelid = "level" + id + color;
+        document.getElementById(levelid).innerHTML = data.level;
+        document.getElementById(sliderid).val(data.level);
+    }
+
+    function postUpdate(id, color) { 
+        var sliderid = "slider" + id + color;
+        var payload = { "level": $(document.getElementById(sliderid)).val()};
+        console.log(payload);
+        var uri = "/v1/led/" + id + "/" + color;
+
+        $.post(uri, payload, function(serverResponse, status) {
+            console.log(serverResponse)
+            updateControls(serverResponse, id, color);                                    // (5)
+        });
+    }
+
+
+
+    $(document).ready(function() {        
+        var data = JSON.parse('{{ data | tojson | safe}}');
+        console.log(Object.keys(data));
+        console.log(data);
+
+        var dashboard_body = "";
+
+        for (i=1; i<=Object.keys(data).length; i++)
+        {
+            var id_lamp = Object.keys(data)[i-1];
+            console.log(id_lamp);       // 1
+            console.log(data[id_lamp]); // {blue: 20, green: 10, red: 30}
+
+            dashboard_body = dashboard_body + '<div class="section"><h2>Device ID: '+ id_lamp +'</h2><br>';//  +'</div>';
+
+            for (j=1; j<=Object.keys(data[id_lamp]).length; j++)
+            {     
+                var color = Object.keys(data[id_lamp])[j-1];
+                console.log(color);
+                dashboard_body = dashboard_body + 'Color: ' + color + ' : <span id="level' + id_lamp + color + '">'+ data[id_lamp][color] +'</span>%<br>'; // eg. level1green
+                dashboard_body = dashboard_body + '<input type="range" min="0" max="100" value="'+ data[id_lamp][color] +'" class="brightnessLevel" onclick="postUpdate('+id_lamp +','+ "'" + color + "'" +')" id="slider'+ id_lamp + color +'"><br>';
+            }
+            
+            dashboard_body = dashboard_body +'</div>';
+        }
+
+        document.getElementById("dashboard").innerHTML = dashboard_body;
+    });
+
+    </script>
+</head>
+<body>
+    <h1>Raspi led dashboard - PBL3 W7 z5</h1>
+    <div id="dashboard"></div>
+</body>
+</html>
