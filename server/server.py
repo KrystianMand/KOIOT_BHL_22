@@ -1,5 +1,5 @@
 from unicodedata import name
-from flask import Flask, request
+from flask import Flask, Response, request
 from flask_restful import Resource, Api, reqparse
 from db import db_init, db
 from models import Person, Visits, Tasks_done, Places
@@ -20,6 +20,10 @@ db_init(app)
 #         db.session.add(person)
 #         db.session.commit()
 #         return "OK"
+def add_visit(number_of_points, date, person_id, place_id):
+    visit = Visits(number_of_points=number_of_points, date=date, person_id=person_id, place_id=place_id)
+    db.session.add(visit)
+    db.session.commit()
     
 class PersonData(Resource):
     def get(self, id):
@@ -42,22 +46,23 @@ class Visit(Resource):
         args = self.args_parser.parse_args()
         # Do stuff with args
         place = Places.query.filter_by(id=args.place_id)
-        
+        # print(type(place))
         if place:
             # if Visits.query.filter_by(id=args.person_id):
-            pass
-            # today = datetime.today().date()
-            # visit = Visits.query.filter_by(id=args.person_id)
-            # if visit:
-            #     if visit.date.date() == today:
-            #         pass
+            today = datetime.today().date()
+            print(today)
+            visits = Visits.query.filter_by(person_id=args.person_id, place_id=args.place_id).all()
+            if visits:
+                if visits[-1].date.date() == today: # Last element in the list (date of last visit)
+                    return {"is_exist": True, "is_visited": True}
+                else:
+                    add_visit(number_of_points=1, date=datetime.now(), person_id=args.person_id, place_id=args.place_id) # Dodanie kolejnej wizyty
+                    return {"is_exist": True, "is_visited": False}
+            else:
+                add_visit(number_of_points=1, date=datetime.now(), person_id=args.person_id, place_id=args.place_id) # Dodanie pierwszej wizyty
+                return {"is_exist": True, "is_visited": False} # Lista wizyt (w tym miejscu) jest pusta, pierwsza wizyta
         else:
-            pass
-        # person = Person(name=name, surname=surname)
-        # db.session.add(person)
-        # db.session.commit()
-        data = {"is_exist": True, "is_visited": True}
-        return data   
+            return {"is_exist": False, "is_visited": False} # Miejsce nie istnieje
 
 class Task(Resource):
     def __init__(self):
