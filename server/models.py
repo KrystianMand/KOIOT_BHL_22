@@ -4,7 +4,7 @@ from db import db
 class Person(db.Model):
     __tablename__ = 'person'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text, unique=True, nullable=False)
+    name = db.Column(db.Text, unique=False, nullable=False)
     surname = db.Column(db.Text, nullable=False)
     visit = db.relationship("Visits", primaryjoin="Person.id==Visits.person_id",
     backref='person', lazy=True)
@@ -27,13 +27,13 @@ class Places(db.Model):
 # )
 class Visits(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    number_of_points = db.Column(db.Integer, unique=True, nullable=False)
+    number_of_points = db.Column(db.Integer, unique=False, nullable=False)
     date = db.Column(db.String, nullable=False)
     person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
     place_id = db.Column(db.Integer, db.ForeignKey('place.id'), nullable=False)
 class Tasks_done(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    number_of_points =  db.Column(db.Integer, unique=True, nullable=False)
+    number_of_points =  db.Column(db.Integer, unique=False, nullable=False)
     date = db.Column(db.String, unique=True, nullable=False)
     person_id = db.Column(db.Integer,db.ForeignKey('person.id'), nullable=False)
     place_id = db.Column(db.Integer,db.ForeignKey('place.id'), nullable=False)
