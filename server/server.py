@@ -33,7 +33,7 @@ class Task(Resource):
     def post(self):
         args = self.args_parser.parse_args()
         
-        return args.task_id
+        return "OK"
         
     
 api.add_resource(PersonId, '/person/<id>')
