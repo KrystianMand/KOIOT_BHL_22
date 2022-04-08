@@ -46,6 +46,7 @@ if __name__ == "__main__":
         for i in range(len(hello_msg)-16):
             lcd.move_left()
             sleep(0.5)
+        sleep(1)
         lcd.clear()
         points_msg = f"Masz {visitor.points} punktow"
         lcd.message = points_msg

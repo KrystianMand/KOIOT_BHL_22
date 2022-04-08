@@ -2,12 +2,14 @@
 <html>
 <head>
     <title>Seniorze!</title>
+    <link rel="stylesheet" href="../static/style.css">
     
 </head>
 <body>
     <h1>Witaj {{visitor.name}} {{visitor.surname}}. Masz {{visitor.points}} punktów.</h1>
     <div id="dashboard">
-        <button onclick="window.location.href='/login'">Zaloguj</button>
+        <button onclick="window.location.href='/logout'">Wyloguj</button>
+        <button onclick="window.location.href='/play'">Zagraj</button>
     </div>
 </body>
 </html>

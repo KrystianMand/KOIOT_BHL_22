@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gra</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="../static/kalambury.js"></script>
+    
+</head>
+<body>
+    <h1>Gracz: {{visitor.name}} {{visitor.surname}} [{{visitor.points}} punktów]</h1>
+
+    <div  id="pojemnik">
+		
+		<div id="obraz_kalambur">
+			<img  src="static/img/s0.jpg" alt="" style="width:50%"/>
+		</div>
+		
+		<div id="miejsce_na_odpowiedz">
+			<input type="text" id="odpowiedz">
+			<input type="button" id="sprawdz" value="Sprawdź" onclick="sprawdz()">
+		</div>
+		
+		<div id="wynik">
+			
+		</div>
+		
+		
+		<div style="clear:both;"></div>
+		
+	</div>
+
+</body>
+</html>
