@@ -1,7 +1,8 @@
-from datetime import datetime
-print ()
-
-def get(self, id):
+db.session.add(visit)
+    db.session.commit()
+    
+class PersonData(Resource):
+    def get(self, id):
         # Do stuff with id 
         person = Person.query.filter_by(id=id).all()
         if person:
@@ -10,8 +11,4 @@ def get(self, id):
             points = 0
             for pt in range(len(visitPoint)):
                 points+=pt[pt]
-            for pt in range(len(taskPoint)):
-                points+=pt[pt]
-        else:
-            data = {"id": id, "name": "Nie ma", "surname": "Takiego"}
-        return data
+            for pt 
