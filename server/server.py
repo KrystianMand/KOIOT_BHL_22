@@ -28,9 +28,15 @@ def add_visit(number_of_points, date, person_id, place_id):
 class PersonData(Resource):
     def get(self, id):
         # Do stuff with id 
-        person = Person.query.get(id)
+        person = Person.query.filter_by(id=id).all()
         if person:
-            data = {"id": person.id, "name": person.name, "surname": person.surname}
+            visitPoint = Visit.query.filter_by(person_id=id).all()
+            taskPoint = Tasks_done.query.filter_by(person_id=id).all()
+            points = 0
+            for pt in range(len(visitPoint)):
+                points+=pt[pt]
+            for pt in range(len(taskPoint)):
+                points+=pt[pt]
         else:
             data = {"id": id, "name": "Nie ma", "surname": "Takiego"}
         return data
