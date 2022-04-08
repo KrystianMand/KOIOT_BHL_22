@@ -1,15 +1,17 @@
 from unicodedata import name
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
+# import json
 
 app = Flask(__name__)
 api = Api(app)
 
-class PersonId(Resource):
+class PersonData(Resource):
     def get(self, id):
-        print(id)  
-        
-        return {"person": "id"}
+        # Do stuff with id 
+        data = {"id": id, "name": "Marian", "surname": "Jakies nazwisko"}
+        # json_data = json.dumps(data)
+        return data
     
 class Visit(Resource):
     def __init__(self):
@@ -20,8 +22,9 @@ class Visit(Resource):
         
     def post(self):
         args = self.args_parser.parse_args()
-        
-        return "OK"   
+        # Do stuff with args
+        data = {"is_visited": "true"}
+        return data   
 
 class Task(Resource):
     def __init__(self):
@@ -32,11 +35,12 @@ class Task(Resource):
         
     def post(self):
         args = self.args_parser.parse_args()
-        
-        return "OK"
+        # Do stuff with args
+        data = {"is_done": "true"}
+        return data 
         
     
-api.add_resource(PersonId, '/person/<id>')
+api.add_resource(PersonData, '/person/<id>')
 api.add_resource(Visit, '/visit')
 api.add_resource(Task, '/task')
 
