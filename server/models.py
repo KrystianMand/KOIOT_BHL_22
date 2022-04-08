@@ -28,12 +28,12 @@ class Places(db.Model):
 class Visits(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number_of_points = db.Column(db.Integer, unique=True, nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
+    date = db.Column(db.String, nullable=False)
     person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
     place_id = db.Column(db.Integer, db.ForeignKey('place.id'), nullable=False)
 class Tasks_done(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number_of_points =  db.Column(db.Integer, unique=True, nullable=False)
-    date = db.Column(db.DateTime, unique=True, nullable=False)
+    date = db.Column(db.String, unique=True, nullable=False)
     person_id = db.Column(db.Integer,db.ForeignKey('person.id'), nullable=False)
     place_id = db.Column(db.Integer,db.ForeignKey('place.id'), nullable=False)
