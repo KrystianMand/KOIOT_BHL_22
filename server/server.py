@@ -29,14 +29,16 @@ class PersonData(Resource):
     def get(self, id):
         # Do stuff with id 
         person = Person.query.filter_by(id=id).all()
+        print(person)
         if person:
-            visitPoint = Visit.query.filter_by(person_id=id).all()
+            visitPoint = Visits.query.filter_by(person_id=id).all()
             taskPoint = Tasks_done.query.filter_by(person_id=id).all()
             points = 0
-            for pt in range(len(visitPoint)):
-                points+=pt[pt]
-            for pt in range(len(taskPoint)):
-                points+=pt[pt]
+            for visit in visitPoint:
+                points += visit.number_of_points
+            for task in taskPoint:
+                points += task.number_of_points
+            data = {"id": id, "name": person[0].name, "surname": person[0].surname, "points": points}
         else:
             data = {"id": id, "name": "Nie ma", "surname": "Takiego"}
         return data
@@ -62,7 +64,10 @@ class Visit(Resource):
                 if visits[-1].date.date() == today: # Last element in the list (date of last visit)
                     return {"is_exist": True, "is_visited": True}
                 else:
-                    add_visit(number_of_points=1, date=datetime.now(), person_id=args.person_id, place_id=args.place_id) # Dodanie kolejnej wizyty
+                    # add_visit(number_of_points=1, date=datetime.now(), person_id=args.person_id, place_id=args.place_id) # Dodanie kolejnej wizyty
+                    visit = Visits(number_of_points=1, date=datetime.now(), person_id=args.person_id, place_id=args.place_id)
+                    db.session.add(visit)
+                    db.session.commit()
                     return {"is_exist": True, "is_visited": False}
             else:
                 add_visit(number_of_points=1, date=datetime.now(), person_id=args.person_id, place_id=args.place_id) # Dodanie pierwszej wizyty
