@@ -34,7 +34,7 @@ visitor = None
 
 
 PLACEID = 1
-URI = "http://192.168.43.145:5000/"
+URI = "http://192.168.137.241:5000/"
 
 
 data = {"name" : "Adam"}
