@@ -17,10 +17,15 @@ api = Api(app) # Flask-RESTful extension wrapper
 
 
 class Visitor:
-    def __init__(self, is_visited, name, surname, points) -> None:
+    def __init__(self, id, name, surname, points) -> None:
+        self.id = id
         self.name = name
         self.surname = surname
         self.points = points
+
+    def setPersonId(self, rfid):
+        self.personId = rfid
+
 
 visitor = None
 
@@ -29,7 +34,7 @@ visitor = None
 
 
 PLACEID = 1
-POSTURI = "http://192.168.43.145:5000/"
+URI = "http://192.168.43.145:5000/"
 
 
 data = {"name" : "Adam"}
@@ -64,15 +69,15 @@ class Login(Resource):
 
         rfid, text = reader.read()
         personId = str(rfid)
-
-        # response = requests.post(
-        #     POSTURI + "visit", json={"place_id": PLACEID, "person_id": personId}
-        # )
-        respDict = json.loads(
-            '{"is_visited": true,"name": "Marian","surname": "Chleb","points": -1}'
-        )  # json.loads(response.content.decode())
+        response = requests.post(
+            URI + "visit", json={"place_id": PLACEID, "person_id": personId}
+        )
+        print(response.content.decode())
+        getResp = requests.get(URI + f"person/{personId}")
+        respDict = json.loads(getResp.content.decode())
 
         visitor = Visitor(**respDict)
+        visitor.setPersonId(personId)
 
         return redirect("/dashboard", code=302)
 
@@ -91,10 +96,12 @@ class Win(Resource):
     def get(self):
         global visitor
 
-        # response = requests.post(
-        #     POSTURI + "task", json={"place_id": PLACEID, "person_id": personId}
-        # )
-        
+        response = requests.post(
+            URI + "task", json={"task_id": PLACEID, "person_id": visitor.personId, "place_id": PLACEID}
+        )
+        getResp = requests.get(URI + f"person/{visitor.id}")
+        respDict = json.loads(getResp.content.decode())
+        visitor.points = respDict["points"]
         # TUTAJ DODAĆ GET AKTUALIZUJĄCY ILOŚĆ PUNKTÓW
         print("Mamy zwycięzcę")
 

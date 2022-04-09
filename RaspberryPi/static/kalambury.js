@@ -24,9 +24,8 @@ var proby = 3;
 
 
 
-function start()
-{
-	document.getElementById("obraz_kalambur").innerHTML = '<img src="'+obrazki[nr]+'" alt="" style="width:50%"/>';
+function start() {
+	document.getElementById("obraz_kalambur").innerHTML = '<img src="' + obrazki[nr] + '" alt="" style="width:50%"/>';
 }
 
 window.onload = start;
@@ -37,17 +36,14 @@ function sprawdz() //sprawdzanie czy wpisana odpowiedz jest taka jak haslo
 {
 	var odpowiedz = document.getElementById("odpowiedz").value;
 	odpowiedz = odpowiedz.toUpperCase();
-	if(odpowiedz == haslo)
-	{
+	if (odpowiedz == haslo) {
 		wygrana();
 	}
-	else{
-		if (proby > 1)
-		{
+	else {
+		if (proby > 1) {
 			nastepnaProba();
 		}
-		else
-		{
+		else {
 			przegrana();
 		}
 	}
@@ -55,24 +51,21 @@ function sprawdz() //sprawdzanie czy wpisana odpowiedz jest taka jak haslo
 
 
 
-function wygrana()
-{
-	document.getElementById("wynik").innerHTML ="Brawo! Poprawna odpowiedź."
-	+"<a class='reset' href='/win'> <u>Zakończ</u></a>";
+function wygrana() {
+	document.getElementById("wynik").innerHTML = "Brawo! Poprawna odpowiedź."
+		+ "<a class='reset' href='/win'> <u>Zakończ</u></a>";
 	document.getElementById("odpowiedz").disabled = true;
 	document.getElementById("sprawdz").disabled = true;
 }
 
-function przegrana()
-{
-	document.getElementById("wynik").innerHTML ="Niestety nie. Nie masz już więcej prób. Prawidłowa odpiwiedź to: "+haslo
-	+"<br/><a class='reset' href='/play'> <u>Jeszcze raz?</u></a>   <a class='reset' href='/dashboard'> <u>Muszę odpocząć...</u></a>";
+function przegrana() {
+	document.getElementById("wynik").innerHTML = "Niestety nie. Nie masz już więcej prób. Prawidłowa odpowiedź to: " + haslo
+		+ "<br/><a class='reset' href='/play'> <u>Jeszcze raz?</u></a>   <a class='reset' href='/dashboard'> <u>Muszę odpocząć...</u></a>";
 	document.getElementById("odpowiedz").disabled = true;
 	document.getElementById("sprawdz").disabled = true;
 }
 
-function nastepnaProba()
-{
-	proby = proby -1;
-	document.getElementById("wynik").innerHTML = "Niestety nie. Pozostało prób "+proby;
+function nastepnaProba() {
+	proby = proby - 1;
+	document.getElementById("wynik").innerHTML = "Niestety nie. Pozostało prób " + proby;
 }

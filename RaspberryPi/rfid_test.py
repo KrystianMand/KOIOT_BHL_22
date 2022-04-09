@@ -30,6 +30,7 @@ if __name__ == "__main__":
         lcd.message = "Przyloz karte"
         rfid, text = reader.read()
         personId = str(rfid)
+        print(personId)
         lcd.clear()
         lcd.message = str(rfid)
         # response = requests.post(
